@@ -1,12 +1,14 @@
-import logging
-
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 from .signal_engine import generate_signal
 from .config import TELEGRAM_BOT_TOKEN
 
-logger = logging.getLogger(__name__)
+
+# =========================
+# BOT INIT
+# =========================
+app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
 
 # =========================
@@ -62,12 +64,6 @@ Price: {sig.price}
 # BOT RUN
 # =========================
 def run_bot():
-    try:
-        logger.info("Initializing bot with token: %s", TELEGRAM_BOT_TOKEN[:8] + "..." if TELEGRAM_BOT_TOKEN else "NOT SET")
-        app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
-        app.add_handler(CommandHandler("signal", signal))
-        print("🚀 Bot running...")
-        app.run_polling()
-    except Exception as e:
-        logger.error("Failed to start bot: %s", e)
-        raise
+    print("🚀 Bot running...")
+    app.add_handler(CommandHandler("signal", signal))
+    app.run_polling()
